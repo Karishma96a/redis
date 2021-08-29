@@ -33,6 +33,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User findById(String id) {
+        System.out.println("Hitting the DB");
         return hashOps.get(key, id);
     }
 

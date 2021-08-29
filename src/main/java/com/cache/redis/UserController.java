@@ -2,17 +2,18 @@ package com.cache.redis;
 
 import com.cache.redis.model.User;
 import com.cache.redis.repo.UserRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @RestController
 @RequestMapping("/rest/user")
-public class UserResource {
+public class UserController {
 
     private UserRepository userRepository;
 
-    public UserResource(UserRepository userRepository) {
+    public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -40,5 +41,11 @@ public class UserResource {
     @GetMapping("/all")
     public Map<String, User> all() {
         return userRepository.findAll();
+    }
+
+    @Cacheable(key = "#id", value = "user")
+    @GetMapping("/{id}")
+    public User findById(@PathVariable("id") final String id) {
+        return userRepository.findById(id);
     }
 }
